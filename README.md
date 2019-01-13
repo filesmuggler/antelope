@@ -24,6 +24,10 @@ Make sure to update pip tool.
 python -m pip install --upgrade pip
 ```
 
+#### Microcontroller Application
+
+The embedded application is 
+
 
 ### Installing
 
