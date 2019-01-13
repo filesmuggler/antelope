@@ -10,7 +10,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 #### Desktop Application
 
-The desktop app is suited to run on Windows, Linux and Mac machines, since it's written in Python. All you need is install Python interpreter from [Python Official Website] (https://www.python.org/). Additionally you will need some packages to run the program smoothly:
+The desktop app is suited to run on Windows, Linux and Mac machines, since it's written in Python. All you need is install Python interpreter from [Python Official Website](https://www.python.org/). Additionally you will need some packages to run the program smoothly:
 
 - pyserial
 
