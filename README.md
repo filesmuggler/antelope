@@ -36,7 +36,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-* [MS Visual Studio 2017](http://www.dropwizard.io/1.0.2/docs/) - Desktop app development
+* [MS Visual Studio 2017](https://visualstudio.microsoft.com/) - Desktop app development
 * [Keil uVision 5](http://www2.keil.com/mdk5/uvision/) - Microcontroller app development
 
 ## Authors
