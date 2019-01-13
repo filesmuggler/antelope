@@ -24,11 +24,13 @@ Make sure to update pip tool.
 python -m pip install --upgrade pip
 ```
 
+All code is in [Addax](Desktop_App/Addax).
+
 #### Microcontroller Application
 
 The embedded application is suited for the Analog Devices [ADuC831 microcontroller](https://www.analog.com/media/en/technical-documentation/data-sheets/aduc831.pdf) and is using its capabilities to receive data from the desktop app, interpret them and conttrol output PWM signal. To open, compile and flash the code you should obtain the copy of [Keil Arm uVision IDE](http://www2.keil.com/mdk5/uvision/). It's free of charge and lets you debug programs up to 2kb of code volume.
 
-All code is in (antelope/uController_App/Hirola)
+All code is in [Hirola](uController_App/Hirola).
 
 ## Deployment
 
