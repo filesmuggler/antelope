@@ -12,11 +12,9 @@
 #include "definitions.h"
 #include "putchar.h"
 
-char buffer[25];
+char buffer[25];																									// general buffer for data
 char uart_buffer[25];
 int local_index;
-
-char return_message[5] = {'h','e', 'l', 'l', 'o'};
 
 char message_index;
 
@@ -30,7 +28,7 @@ char frequency_2_t[8];																						// char array to convert
 int duty_cycle_2;																									// ch#2 duty cycle value
 char duty_cycle_2_t[2];																						//
 	
-int operation_mode;
+char operation_mode;
 
 char ascii_offset;
 int conversion_scaler;
@@ -46,23 +44,19 @@ bool is_read = TRUE;
 
 bool do_it_once = TRUE;
 
-void showResults(){
-	PWMCON=0x00;
-	setBit(PWMCON,4);
-	setBit(PWMCON,1);
-	setBit(PWMCON,0);
-	
-	PWM1H=0xFF;
-	PWM1L=0xFF;
-	PWM0H=0x44;
-	PWM0L=0xFF;
-}
+
 void sendMessage()
 {
 	j = 0;
-	for(j = 0;j<5;j++){
-		putchar(return_message[j]);
-	}
+	for(j = 0;j<25;j++){
+		if(j==1)
+		{
+			putchar(operation_mode);
+		}
+		else{
+			putchar(buffer[j]);
+		}
+	}	
 	putchar('\n');
 }
 
@@ -75,18 +69,16 @@ void receiveMessage() interrupt 4
 	if(RI==1){
 		received = (char)SBUF;
 		RI = 0;
-		
-		//SBUF = received;
-		buffer[message_index] = received;
+
 		if((message_index == 1) && (received == 'G'))
 		{
-			// it's request for data
-			// dont follow further
-			// execute function for sending data
-			
 			sendMessage();
 			message_index = 0;
 			return;
+		}
+		else
+		{
+			buffer[message_index] = received;
 		}
 		message_index = message_index + 1;
 		
@@ -105,11 +97,6 @@ void receiveMessage() interrupt 4
 	{
 		is_read = TRUE;
 	}
-	/*
-	if(message_index > 25)
-	{
-		message_index = 0;
-	}*/
 	
 	return;
 }
@@ -293,7 +280,6 @@ void main()
 	ES = 1;
 	EA = 1;
 	
-	
 	/**
   * UART set into Mode 1 (8-bit, Variable Baud Rate)
 	*/
@@ -314,12 +300,10 @@ void main()
 	*/
 	message_index = 0;
 	local_index = 0;
-	ascii_offset = 48;
-	
+	ascii_offset = 48;	
 	
 	while(1)
 	{
-		
 		while(buffer[local_index]!='E' && !is_read)
 		{
 			analyzeData();
@@ -329,10 +313,6 @@ void main()
 			is_read = TRUE;
 			getValues();
 			local_index = 0;
-		}
-		// update status of the board while not reading
-		
-	
-		
+		}		
 	}
 }
