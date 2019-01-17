@@ -1,5 +1,6 @@
 ".\Objects\main.obj",
 ".\Objects\definitions.obj",
-".\Objects\timers.obj" 
+".\Objects\timers.obj",
+".\Objects\putchar.obj" 
 TO ".\Objects\Hirola" 
 PRINT(".\Listings\Hirola.m51") RAMSIZE(256) 

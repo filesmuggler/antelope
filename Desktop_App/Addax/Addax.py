@@ -34,6 +34,14 @@ class App(tk.Frame):
     '''
     channel_panel_2 = []
 
+    '''
+    Scalers
+    '''
+    freqScaler_1 = ''
+    freqScaler_2 = ''
+    fillingScaler_1 = ''
+    fillingScaler_2 = ''
+
 
     def __init__(self,master=None):
         tk.Frame.__init__(self,master)
@@ -71,7 +79,7 @@ class App(tk.Frame):
         '''
         Vertical Separator Group
         '''
-        self.v_separator_1 = ttk.Separator(self, orient=tk.VERTICAL).grid(column=3, row=0, rowspan=5, sticky=tk.N+tk.S)
+        self.v_separator_1 = ttk.Separator(self, orient=tk.VERTICAL).grid(column=3, row=0, rowspan=15, sticky=tk.N+tk.S)
         
         '''
         Horizontal Separator Group
@@ -106,10 +114,10 @@ class App(tk.Frame):
         Output Message Group
         '''
         self.outputLabel = tk.Label(self,text="Output:")
-        self.outputLabel.grid(column=0, row=6, sticky=tk.W, padx=5, pady=2)
+        self.outputLabel.grid(column=4, row=6, sticky=tk.W, padx=5, pady=2)
  
         self.messageLabel = tk.Label(self,text="Message", relief=tk.SUNKEN, height = 2)
-        self.messageLabel.grid(column=0, row=7, columnspan=11, rowspan=7,sticky=tk.N+tk.S+tk.W+tk.E, padx=5, pady=2)
+        self.messageLabel.grid(column=4, row=7, columnspan=11, rowspan=7,sticky=tk.N+tk.S+tk.W+tk.E, padx=5, pady=2)
         
         
         '''
@@ -131,6 +139,7 @@ class App(tk.Frame):
 
         self.freqScaler_1 = tk.Scale(self, from_=0, to=100, tickinterval = 10, length= 300,orient=tk.HORIZONTAL)
         self.freqScaler_1.grid(row=1, column=4, columnspan=3, padx=5, pady=5)
+        
 
         
         '''
@@ -206,7 +215,7 @@ class App(tk.Frame):
         self.quitButton.grid(column=0,row=15, sticky=tk.N+tk.S+tk.W+tk.E, padx=5, pady=5)
 
         self.randButton = tk.Button(
-            self, text="Random", command=self.randSignal
+            self, text="Receive", command=self.receiveData
             )
         self.randButton.grid(column=8,row=15, sticky=tk.N+tk.S+tk.W+tk.E, padx=5, pady=5)
 
@@ -307,6 +316,12 @@ class App(tk.Frame):
         self.messageLabel['text'] = "sending data..."
         self.messageLabel['fg'] = "green"
 
+    def receiveData(self):
+        self.request_for_data = "SG".encode()
+        self.incoming_data = self.s_comm.receiveData(self.request_for_data)
+        self.messageLabel['text'] = str(self.incoming_data)
+        self.messageLabel['fg'] = "blue"
+        print(str(self.incoming_data))
 
     def encodeData(self):
         '''
@@ -368,6 +383,6 @@ root.resizable(width=False, height=False)
 # creates app with input root argument
 app = App(root)
 # adds title
-app.master.title('Macaque')
+app.master.title('Addax')
 # app starts
 app.mainloop()

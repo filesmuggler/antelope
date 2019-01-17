@@ -10,10 +10,13 @@
 #include "aduc831.h"
 #include "timers.h"
 #include "definitions.h"
+#include "putchar.h"
 
 char buffer[25];
 char uart_buffer[25];
 int local_index;
+
+char return_message[5] = {'h','e', 'l', 'l', 'o'};
 
 char message_index;
 
@@ -32,6 +35,7 @@ int operation_mode;
 char ascii_offset;
 int conversion_scaler;
 int i;
+int j;
 
 bool new_data = FALSE;
 bool mode_data = FALSE;
@@ -39,6 +43,28 @@ bool duty_cycle_data = FALSE;
 bool freq_data = FALSE;
 bool two_channel = FALSE;
 bool is_read = TRUE;
+
+bool do_it_once = TRUE;
+
+void showResults(){
+	PWMCON=0x00;
+	setBit(PWMCON,4);
+	setBit(PWMCON,1);
+	setBit(PWMCON,0);
+	
+	PWM1H=0xFF;
+	PWM1L=0xFF;
+	PWM0H=0x44;
+	PWM0L=0xFF;
+}
+void sendMessage()
+{
+	j = 0;
+	for(j = 0;j<5;j++){
+		putchar(return_message[j]);
+	}
+	putchar('\n');
+}
 
 void receiveMessage() interrupt 4
 {
@@ -49,9 +75,21 @@ void receiveMessage() interrupt 4
 	if(RI==1){
 		received = (char)SBUF;
 		RI = 0;
+		
 		//SBUF = received;
 		buffer[message_index] = received;
+		if((message_index == 1) && (received == 'G'))
+		{
+			// it's request for data
+			// dont follow further
+			// execute function for sending data
+			
+			sendMessage();
+			message_index = 0;
+			return;
+		}
 		message_index = message_index + 1;
+		
 	}
 	if(TI==1){
 		TI = 0;
@@ -242,6 +280,8 @@ void getValues()																										// convert duty cycles and freqs to in
 	}
 }
 
+
+
 /**
  * main function
  */
@@ -290,8 +330,9 @@ void main()
 			getValues();
 			local_index = 0;
 		}
+		// update status of the board while not reading
 		
-		
+	
 		
 	}
 }

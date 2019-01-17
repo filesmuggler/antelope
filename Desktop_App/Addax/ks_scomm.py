@@ -73,4 +73,13 @@ class SerialComm:
             self.serial_port.write(data)
             self.serial_port.close()
 
+    def receiveData(self, data):
+        self.serial_port.open()
+        self.serial_port.write(data)
+        incoming_data = self.serial_port.readline()
+        self.serial_port.close()
+        incoming_data = incoming_data.decode()
+
+        return incoming_data
+
        
