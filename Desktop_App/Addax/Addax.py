@@ -252,7 +252,7 @@ class App(tk.Frame):
             if(self.debug_mode):
                 print("Select mode")
             self.messageLabel['text'] = "Select Mode First!"
-            self.messageLabel['fg'] = "red"
+            self.messageLabel['fg'] = "violet"
         else:
             self.selected_mode = self.modesList.get(self.modesList.curselection());
             if(self.debug_mode):
