@@ -6,7 +6,6 @@
  */
  
  
- 
 #include "aduc831.h"
 #include "timers.h"
 #include "definitions.h"
@@ -43,6 +42,42 @@ bool two_channel = FALSE;
 bool is_read = TRUE;
 
 bool do_it_once = TRUE;
+
+void setPWM()
+{
+	// set PWM according to received values
+	if(operation_mode == '0')
+	{
+		// turn off PWM
+	}
+	else if(operation_mode == '1')
+	{
+		// set PWM in Mode 1
+	}
+	else if(operation_mode == '2')
+	{
+		// set PWM in Mode 2
+	}
+	else if(operation_mode == '3')
+	{
+		// set PWM in Mode 3
+	}
+	else if(operation_mode == '4')
+	{
+		// set PWM in Mode 4
+	}
+	else if(operation_mode == '5')
+	{
+		// set PWM in Mode 5
+	}
+	else if(operation_mode == '6')
+	{
+		// set PWM in Mode 6
+	}
+	
+	
+	
+}
 
 
 void sendMessage()
@@ -313,6 +348,7 @@ void main()
 			is_read = TRUE;
 			getValues();
 			local_index = 0;
+			setPWM();
 		}		
 	}
 }
