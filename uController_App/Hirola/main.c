@@ -19,14 +19,20 @@ char message_index;
 
 int frequency_1;																									// ch#1 freq value
 char frequency_1_t[8];																						// char array to analyze
+float period_1;
 int duty_cycle_1;																									// after processing
 char duty_cycle_1_t[2];																						// before processing
 
+
 int frequency_2;																									// ch#2 freq value
 char frequency_2_t[8];																						// char array to convert
+float period_2;
 int duty_cycle_2;																									// ch#2 duty cycle value
 char duty_cycle_2_t[2];																						//
-	
+
+//float delay;
+//float T_MAX_ms_16 = 5.9265;
+
 char operation_mode;
 
 char ascii_offset;
@@ -53,14 +59,32 @@ void setPWM()
 	else if(operation_mode == '1')
 	{
 		// set PWM in Mode 1
-	}
+		PWMCON = (PWM_MODE1|PWM_NODIV_FOSC);
+		// calculate period from frequency
+		period_1 = (1.0/frequency_1)*1000.0;
+		// set period
+		PWM_M1_PERIOD(period_1);
+		// set duty cycle
+		PWM_M1_DUTY((period_1*0.01*duty_cycle_1));
+	}/*
 	else if(operation_mode == '2')
 	{
 		// set PWM in Mode 2
+		/*
+		PWMCON=(PWM_MODE2|PWM_NODIV_FOSC);
+		period_1 = 1.0/frequency_1;
+		PWM_M2_PERIOD(period_1);
+		PWM_M2_DUTY1((period_1*0.01*duty_cycle_1));
+		PWM_M2_DELAY2(delay);
+		PWM_M2_DUTY2((period_1*0.01*duty_cycle_2+delay));//delay2 added,PWM0L stores end of PWM2		
 	}
 	else if(operation_mode == '3')
 	{
 		// set PWM in Mode 3
+		/*
+		PWMCON=(PWM_MODE3|PWM_NODIV_FOSC);
+		PWM_M3_DUTY1((T_MAX_ms_16*0.01*duty_cycle_1));
+		PWM_M3_DUTY2((T_MAX_ms_16*0.01*duty_cycle_2));
 	}
 	else if(operation_mode == '4')
 	{
@@ -69,12 +93,18 @@ void setPWM()
 	else if(operation_mode == '5')
 	{
 		// set PWM in Mode 5
+		/*
+		PWMCON=(PWM_MODE5|PWM_NODIV_FOSC);
+		PWM_M5_PERIOD1(period_1);
+		PWM_M5_PERIOD2(period_2);
+		PWM_M5_DUTY1((period_1*0.01*duty_cycle_1));
+		PWM_M5_DUTY2((period_2*0.01*duty_cycle_2));
 	}
 	else if(operation_mode == '6')
 	{
 		// set PWM in Mode 6
 	}
-	
+	*/
 	
 	
 }

@@ -251,10 +251,9 @@ class Addax(tk.Frame):
         if(self.tab_index == 0):
             if(self.debug_mode):
                 print("getting licky lollies")
-
             self.selected_mode = int(self.tab_index) + 1
             self.selected_duty_cycle_1 = self.mode_1_frame.user_duty_scaler.get()
-            self.selected_freq_1 = self.mode_1_frame.user_freq_scaler.get()
+            self.selected_freq_1 = (int)(1.0/((self.mode_1_frame.user_freq_scaler.get())*0.001))
         elif(self.tab_index == 1):
             if(self.debug_mode):
                 print("getting pinky pies")
