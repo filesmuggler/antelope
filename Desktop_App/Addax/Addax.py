@@ -255,6 +255,9 @@ class Addax(tk.Frame):
             self.selected_mode = int(self.tab_index) + 1
             self.selected_duty_cycle_1 = self.mode_1_frame.user_duty_scaler.get()
             self.selected_freq_1 = (int)(1.0/((self.mode_1_frame.user_freq_scaler.get())*0.001))
+            '''
+            TO DO: Obsluga przypadkow granicznych i powiadamiania uzytkownika
+            '''
         elif(self.tab_index == 1):
             if(self.debug_mode):
                 print("getting pinky pies")
@@ -282,9 +285,6 @@ class Addax(tk.Frame):
                 else:
                     self.selected_freq_2 = (int)(1.0/((self.temp_freq_2*0.000001)))
                     print(self.selected_freq_2)
-                
-            
-
 
         elif(self.tab_index == 2):
             if(self.debug_mode):
@@ -292,20 +292,27 @@ class Addax(tk.Frame):
             self.selected_mode = int(self.tab_index) + 1
             self.selected_duty_cycle_1 = self.mode_3_frame.user_duty_scaler_1.get()
             self.selected_duty_cycle_2 = self.mode_3_frame.user_duty_scaler_2.get()
-            self.selected_freq_1 = self.mode_3_frame.user_freq_scaler.get()
-            self.selected_freq_2 = self.selected_freq_1
+            self.selected_freq_1 = 168
+            self.selected_freq_2 = 168
+
+
         elif(self.tab_index == 3):
             if(self.debug_mode):
                 print("getting nutty nuts")
             self.selected_mode = int(self.tab_index) + 1
+
+
         elif(self.tab_index == 4):
             if(self.debug_mode):
                 print("getting crispy creams")
             self.selected_mode = int(self.tab_index) + 1
             self.selected_duty_cycle_1 = self.mode_5_frame.user_duty_scaler_1.get()
             self.selected_duty_cycle_2 = self.mode_5_frame.user_duty_scaler_2.get()
-            self.selected_freq_1 = self.mode_5_frame.user_freq_scaler_1.get()
-            self.selected_freq_2 = self.mode_5_frame.user_freq_scaler_2.get()
+
+            self.selected_freq_1 = (int)(1.0/((self.mode_5_frame.user_freq_scaler_1.get())*0.000001))
+            self.selected_freq_2 = (int)(1.0/((self.mode_5_frame.user_freq_scaler_2.get())*0.000001))
+
+
         elif(self.tab_index == 5):
             if(self.debug_mode):
                 print("getting dicky donuts")
