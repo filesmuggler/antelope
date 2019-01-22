@@ -22,10 +22,7 @@ class Mode_3_Frame(tk.Frame):
         '''
         Creates all the widgets in the window
         '''
-        self.user_freq_label = tk.Label(self, text="Period (MAX)").grid(column=0,row=0, sticky=tk.W)
-        self.user_freq_scaler = tk.Scale(self, from_=0, to=100, tickinterval = 10, length= 300,orient=tk.HORIZONTAL)
-        self.user_freq_scaler.grid(column=0,row=1,columnspan=2, padx=5, pady=5)
-
+        
         self.user_duty_label_1 = tk.Label(self, text="Duty Cycle 1 (A)").grid(column=0,row=2, sticky=tk.W)
         self.user_duty_scaler_1 = tk.Scale(self, from_=0, to=100, tickinterval = 10, length= 300,orient=tk.HORIZONTAL)
         self.user_duty_scaler_1.grid(column=0, row=3, columnspan=2, padx=5, pady=5)

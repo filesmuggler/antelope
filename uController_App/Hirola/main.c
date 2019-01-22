@@ -108,10 +108,10 @@ void setPWM()
 		
 		// set PWM in Mode 5		
 		PWMCON=(PWM_MODE5|PWM_NODIV_FOSC);
-		PWM_M5_PERIOD1(1.0/frequency_1);
-		PWM_M5_PERIOD2(1.0/frequency_2);
-		PWM_M5_DUTY1((1.0/frequency_1*0.01*duty_cycle_1));
-		PWM_M5_DUTY2((1.0/frequency_2*0.01*duty_cycle_2));
+		PWM_M5_PERIOD1(1.0/frequency_1*1000);
+		PWM_M5_PERIOD2(1.0/frequency_2*1000);
+		PWM_M5_DUTY1((1.0/frequency_1*1000*0.01*duty_cycle_1));
+		PWM_M5_DUTY2((1.0/frequency_2*1000*0.01*duty_cycle_2));
 		
 	}
 	else if(operation_mode == '6')
