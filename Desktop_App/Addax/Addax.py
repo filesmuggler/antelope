@@ -246,8 +246,9 @@ class Addax(tk.Frame):
             print("getting donuts for boss...")
         self.tab_index = self.tabControl.index(self.tabControl.select())
         if(self.debug_mode):
-            print(self.tab_index)
-            print(self.tabControl.tab(self.tab_index))
+            #print(self.tab_index)
+            #print(self.tabControl.tab(self.tab_index))
+            print("")
         if(self.tab_index == 0):
             if(self.debug_mode):
                 print("getting licky lollies")
@@ -260,8 +261,30 @@ class Addax(tk.Frame):
             self.selected_mode = int(self.tab_index) + 1
             self.selected_duty_cycle_1 = self.mode_2_frame.user_duty_scaler_1.get()
             self.selected_duty_cycle_2 = self.mode_2_frame.user_duty_scaler_2.get()
-            self.selected_freq_1 = self.mode_2_frame.user_freq_scaler.get()
-            self.selected_freq_2 = self.selected_freq_1
+
+            self.temp_freq_1 = self.mode_2_frame.user_freq_scaler.get()
+            self.selected_freq_1 = (int)(1.0/((self.mode_2_frame.user_freq_scaler.get())*0.000001))
+            self.temp_freq_2 = self.mode_2_frame.user_delay_scaler.get()
+            if(self.debug_mode):
+                print(self.temp_freq_2)
+            if(self.temp_freq_2 > (self.temp_freq_1-(self.temp_freq_1*self.selected_duty_cycle_2*0.01))):
+                print("too big delay")
+                '''
+                TO DO: System powiadamiania uzytkownika o zbyt duzym opoznieniu
+                '''
+                self.selected_freq_2 = 0
+                return
+            else:
+                if(self.debug_mode):
+                    print(self.temp_freq_2)
+                if(self.temp_freq_2 == 0):
+                    self.selected_freq_2 = 0
+                else:
+                    self.selected_freq_2 = (int)(1.0/((self.temp_freq_2*0.000001)))
+                    print(self.selected_freq_2)
+                
+            
+
 
         elif(self.tab_index == 2):
             if(self.debug_mode):

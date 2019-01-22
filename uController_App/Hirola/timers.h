@@ -17,7 +17,7 @@
 #define T1_MODE_GATE_OFF									0x00 // 
 #define T1_MODE_GATE_ON										0x80 // 1000 0000b
 
-#define F_OSC 											12000000.0 // oscillator frequency
+#define F_OSC 											11058000.0 // oscillator frequency
 #define Tx_tau(divider)\
 (float)((float)divider/F_OSC)								 // okres zliczanych impulsów czasomierza
 	

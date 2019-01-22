@@ -7,7 +7,6 @@ typedef enum {TRUE = 1, FALSE = 0} bool;
 #define clrBit(bajt, nOfBit) bajt&=~(0x01<<nOfBit);
 
 
-
 //PWM config
 #define PWM_PWM0_OFF (0x0001<<7)
 #define PWM_PWM0_ON 0x0000
@@ -53,11 +52,11 @@ typedef enum {TRUE = 1, FALSE = 0} bool;
 #define PWM_M3_DUTY1(time_pwm_ms) PWM0L=PWM_INITIAL_VALUE(time_pwm_ms); PWM0H=PWM_INITIAL_VALUE(time_pwm_ms)>>8
 #define PWM_M3_DUTY2(time_pwm_ms) PWM1L=PWM_INITIAL_VALUE(time_pwm_ms); PWM1H=PWM_INITIAL_VALUE(time_pwm_ms)>>8
 //Mode5
-/*
+
 #define PWM_M5_PERIOD1(time_pwm_ms) PWM1L=PWM_INITIAL_VALUE(time_pwm_ms);
 #define PWM_M5_PERIOD2(time_pwm_ms) PWM1H=PWM_INITIAL_VALUE(time_pwm_ms);
 #define PWM_M5_DUTY1(time_pwm_ms) PWM0L=PWM_INITIAL_VALUE(time_pwm_ms);
-#define PWM_M5_DUTY2(time_pwm_ms) PWM0H=PWM_INITIAL_VALUE(time_pwm_ms);*/
+#define PWM_M5_DUTY2(time_pwm_ms) PWM0H=PWM_INITIAL_VALUE(time_pwm_ms);
 
 
 #endif

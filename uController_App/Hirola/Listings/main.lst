@@ -1,4 +1,4 @@
-C51 COMPILER V9.59.0.0   MAIN                                                              01/21/2019 18:05:24 PAGE 1   
+C51 COMPILER V9.59.0.0   MAIN                                                              01/22/2019 11:25:28 PAGE 1   
 
 
 C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
@@ -20,398 +20,415 @@ line level    source
   10          #include "timers.h"
   11          #include "definitions.h"
   12          #include "putchar.h"
-  13          
-  14          char buffer[25];                                                  // general buffer for data
-  15          char uart_buffer[25];
-  16          int local_index;
-  17          
-  18          char message_index;
-  19          
-  20          int frequency_1;                                                  // ch#1 freq value
-  21          char frequency_1_t[8];                                            // char array to analyze
-  22          float period_1;
-  23          int duty_cycle_1;                                                 // after processing
-  24          char duty_cycle_1_t[2];                                           // before processing
-  25          
+  13          #include <stdio.h>
+  14          #include <stdlib.h>
+  15          
+  16          char buffer[25];                                                  // general buffer for data
+  17          char local_index;
+  18          
+  19          char message_index;
+  20          
+  21          long frequency_1;                                                 // ch#1 freq value
+  22          char frequency_1_t[8];                                            // char array to analyze
+  23          
+  24          char duty_cycle_1;                                                  // after processing
+  25          char duty_cycle_1_t[2];                                           // before processing
   26          
-  27          int frequency_2;                                                  // ch#2 freq value
-  28          char frequency_2_t[8];                                            // char array to convert
-  29          float period_2;
-  30          int duty_cycle_2;                                                 // ch#2 duty cycle value
-  31          char duty_cycle_2_t[2];                                           //
-  32          
-  33          //float delay;
-  34          //float T_MAX_ms_16 = 5.9265;
-  35          
-  36          char operation_mode;
-  37          
-  38          char ascii_offset;
-  39          int conversion_scaler;
-  40          int i;
-  41          int j;
-  42          
-  43          bool new_data = FALSE;
-  44          bool mode_data = FALSE;
-  45          bool duty_cycle_data = FALSE;
-  46          bool freq_data = FALSE;
-  47          bool two_channel = FALSE;
-  48          bool is_read = TRUE;
-  49          
-  50          bool do_it_once = TRUE;
-  51          
-  52          void setPWM()
-  53          {
-  54   1        // set PWM according to received values
-C51 COMPILER V9.59.0.0   MAIN                                                              01/21/2019 18:05:24 PAGE 2   
+  27          
+  28          long frequency_2;                                                 // ch#2 freq value
+  29          char frequency_2_t[8];                                            // char array to convert
+  30          
+  31          char duty_cycle_2;                                                  // ch#2 duty cycle value
+  32          char duty_cycle_2_t[2];                                           //
+  33          
+  34          float delay;
+  35          float T_MAX_ms_16 = 5.9265;
+  36          
+  37          char operation_mode;
+  38          
+  39          char ascii_offset;
+  40          long conversion_scaler;
+  41          char i;
+  42          char j;
+  43          
+  44          bool new_data = FALSE;
+  45          bool mode_data = FALSE;
+  46          bool duty_cycle_data = FALSE;
+  47          bool freq_data = FALSE;
+  48          bool two_channel = FALSE;
+  49          bool is_read = TRUE;
+  50          
+  51          bool do_it_once = TRUE;
+  52          
+  53          void setPWM()
+  54          {
+C51 COMPILER V9.59.0.0   MAIN                                                              01/22/2019 11:25:28 PAGE 2   
 
-  55   1        if(operation_mode == '0')
-  56   1        {
-  57   2          // turn off PWM
-  58   2        }
-  59   1        else if(operation_mode == '1')
-  60   1        {
-  61   2          // set PWM in Mode 1
-  62   2          PWMCON = (PWM_MODE1|PWM_NODIV_FOSC);
-  63   2          // calculate period from frequency
-  64   2          period_1 = (1.0/frequency_1)*1000.0;
-  65   2          // set period
-  66   2          PWM_M1_PERIOD(period_1);
-  67   2          // set duty cycle
-  68   2          PWM_M1_DUTY((period_1*0.01*duty_cycle_1));
-  69   2        }/*
-  70   1        else if(operation_mode == '2')
-  71   1        {
-  72   1          // set PWM in Mode 2
-  73   1          /*
-  74   1          PWMCON=(PWM_MODE2|PWM_NODIV_FOSC);
-  75   1          period_1 = 1.0/frequency_1;
-  76   1          PWM_M2_PERIOD(period_1);
-  77   1          PWM_M2_DUTY1((period_1*0.01*duty_cycle_1));
-  78   1          PWM_M2_DELAY2(delay);
-  79   1          PWM_M2_DUTY2((period_1*0.01*duty_cycle_2+delay));//delay2 added,PWM0L stores end of PWM2    
-  80   1        }
-  81   1        else if(operation_mode == '3')
-  82   1        {
-  83   1          // set PWM in Mode 3
-  84   1          /*
-  85   1          PWMCON=(PWM_MODE3|PWM_NODIV_FOSC);
-  86   1          PWM_M3_DUTY1((T_MAX_ms_16*0.01*duty_cycle_1));
-  87   1          PWM_M3_DUTY2((T_MAX_ms_16*0.01*duty_cycle_2));
-  88   1        }
-  89   1        else if(operation_mode == '4')
-  90   1        {
-  91   1          // set PWM in Mode 4
-  92   1        }
-  93   1        else if(operation_mode == '5')
+  55   1        PWM_CFG2;
+  56   1        // set PWM according to received values
+  57   1        if(operation_mode == '0')
+  58   1        {
+  59   2          // turn off PWM
+  60   2        }
+  61   1        else if(operation_mode == '1')
+  62   1        {
+  63   2          
+  64   2          // set PWM in Mode 1
+  65   2          PWMCON = (PWM_MODE1|PWM_NODIV_FOSC);
+  66   2          // calculate period from frequency
+  67   2          
+  68   2          // set period
+  69   2          PWM_M1_PERIOD(1.0/frequency_1*1000);
+  70   2          // set duty cycle
+  71   2          PWM_M1_DUTY((1.0/frequency_1*1000*0.01*duty_cycle_1));
+  72   2          
+  73   2        }
+  74   1        else if(operation_mode == '2')
+  75   1        {
+  76   2          
+  77   2          // set PWM in Mode 2
+  78   2          PWMCON=(PWM_MODE2|PWM_NODIV_FOSC);
+  79   2          PWM_M2_PERIOD(1.0/frequency_1*1000);
+  80   2          PWM_M2_DUTY1((1.0/frequency_1*1000*0.01*duty_cycle_1));
+  81   2          if(frequency_2>0)
+  82   2          {
+  83   3            delay = 1.0/frequency_2*1000;
+  84   3          }
+  85   2          else
+  86   2          {
+  87   3            delay = 0;
+  88   3          }
+  89   2          PWM_M2_DELAY2(delay);//
+  90   2          PWM_M2_DUTY2((1.0/frequency_1*1000*0.01*duty_cycle_2+delay));//delay2 added,PWM0L stores end of PWM2    //
+             -+(1.0/frequency_2*1000)
+  91   2          
+  92   2        }
+  93   1        else if(operation_mode == '3')
   94   1        {
-  95   1          // set PWM in Mode 5
-  96   1          /*
-  97   1          PWMCON=(PWM_MODE5|PWM_NODIV_FOSC);
-  98   1          PWM_M5_PERIOD1(period_1);
-  99   1          PWM_M5_PERIOD2(period_2);
- 100   1          PWM_M5_DUTY1((period_1*0.01*duty_cycle_1));
- 101   1          PWM_M5_DUTY2((period_2*0.01*duty_cycle_2));
- 102   1        }
- 103   1        else if(operation_mode == '6')
- 104   1        {
- 105   1          // set PWM in Mode 6
- 106   1        }
- 107   1        */
- 108   1        
- 109   1        
- 110   1      }
- 111          
- 112          
- 113          void sendMessage()
- 114          {
- 115   1        j = 0;
- 116   1        for(j = 0;j<25;j++){
-C51 COMPILER V9.59.0.0   MAIN                                                              01/21/2019 18:05:24 PAGE 3   
+  95   2          
+  96   2          // set PWM in Mode 3
+  97   2          PWMCON=(PWM_MODE3|PWM_NODIV_FOSC);
+  98   2          PWM_M3_DUTY1((T_MAX_ms_16*0.01*duty_cycle_1));
+  99   2          PWM_M3_DUTY2((T_MAX_ms_16*0.01*duty_cycle_2));
+ 100   2          
+ 101   2        }
+ 102   1        else if(operation_mode == '4')
+ 103   1        {
+ 104   2          // set PWM in Mode 4
+ 105   2        }
+ 106   1        else if(operation_mode == '5')
+ 107   1        {
+ 108   2          
+ 109   2          // set PWM in Mode 5    
+ 110   2          PWMCON=(PWM_MODE5|PWM_NODIV_FOSC);
+ 111   2          PWM_M5_PERIOD1(1.0/frequency_1);
+ 112   2          PWM_M5_PERIOD2(1.0/frequency_2);
+ 113   2          PWM_M5_DUTY1((1.0/frequency_1*0.01*duty_cycle_1));
+ 114   2          PWM_M5_DUTY2((1.0/frequency_2*0.01*duty_cycle_2));
+ 115   2          
+C51 COMPILER V9.59.0.0   MAIN                                                              01/22/2019 11:25:28 PAGE 3   
 
- 117   2          if(j==1)
- 118   2          {
- 119   3            putchar(operation_mode);
- 120   3          }
- 121   2          else{
- 122   3            putchar(buffer[j]);
- 123   3          }
- 124   2        } 
- 125   1        putchar('\n');
- 126   1      }
- 127          
- 128          void receiveMessage() interrupt 4
- 129          {
- 130   1        /**
- 131   1        * Receiving transmission
- 132   1        */
- 133   1        char received = 0;
- 134   1        if(RI==1){
- 135   2          received = (char)SBUF;
- 136   2          RI = 0;
- 137   2      
- 138   2          if((message_index == 1) && (received == 'G'))
- 139   2          {
- 140   3            sendMessage();
- 141   3            message_index = 0;
- 142   3            return;
- 143   3          }
- 144   2          else
- 145   2          {
- 146   3            buffer[message_index] = received;
- 147   3          }
- 148   2          message_index = message_index + 1;
- 149   2          
- 150   2        }
- 151   1        if(TI==1){
- 152   2          TI = 0;
- 153   2        }
- 154   1        
- 155   1        if(received == 'E')
- 156   1        {
- 157   2          is_read = FALSE;
- 158   2          message_index = 0;
- 159   2          return;
- 160   2        }
- 161   1        else
- 162   1        {
- 163   2          is_read = TRUE;
- 164   2        }
- 165   1        
- 166   1        return;
- 167   1      }
- 168          
- 169          
- 170          
- 171          void analyzeData()
- 172          {
- 173   1        if(buffer[local_index]=='S')
- 174   1            {
- 175   2              new_data = TRUE;
- 176   2          
- 177   2              mode_data = TRUE;
- 178   2              freq_data = FALSE;
-C51 COMPILER V9.59.0.0   MAIN                                                              01/21/2019 18:05:24 PAGE 4   
+ 116   2        }
+ 117   1        else if(operation_mode == '6')
+ 118   1        {
+ 119   2          // set PWM in Mode 6
+ 120   2        }
+ 121   1        
+ 122   1        
+ 123   1        
+ 124   1      }
+ 125          
+ 126          
+ 127          void sendMessage()
+ 128          {
+ 129   1        
+ 130   1        j = 0;
+ 131   1        for(j = 0;j<25;j++){
+ 132   2          if(j==1)
+ 133   2          {
+ 134   3            putchar(operation_mode);
+ 135   3          }
+ 136   2          else{
+ 137   3            putchar(buffer[j]);
+ 138   3          }
+ 139   2        } 
+ 140   1        putchar('\n');
+ 141   1        
+ 142   1      }
+ 143          
+ 144          void receiveMessage() interrupt 4
+ 145          {
+ 146   1        /**
+ 147   1        * Receiving transmission
+ 148   1        */
+ 149   1        char received = 0;
+ 150   1        if(RI==1){
+ 151   2          received = (char)SBUF;
+ 152   2          RI = 0;
+ 153   2      
+ 154   2          if((message_index == 1) && (received == 'G'))
+ 155   2          {
+ 156   3            sendMessage();
+ 157   3            message_index = 0;
+ 158   3            return;
+ 159   3          }
+ 160   2          else
+ 161   2          {
+ 162   3            buffer[message_index] = received;
+ 163   3          }
+ 164   2          message_index = message_index + 1;
+ 165   2          
+ 166   2        }
+ 167   1        if(TI==1){
+ 168   2          TI = 0;
+ 169   2        }
+ 170   1        
+ 171   1        if(received == 'E')
+ 172   1        {
+ 173   2          is_read = FALSE;
+ 174   2          message_index = 0;
+ 175   2          return;
+ 176   2        }
+ 177   1        else
+C51 COMPILER V9.59.0.0   MAIN                                                              01/22/2019 11:25:28 PAGE 4   
 
- 179   2              duty_cycle_data = FALSE;
- 180   2          
- 181   2              local_index = local_index + 1;
- 182   2              return;
- 183   2            }
- 184   1            else if(buffer[local_index] == 'D')
- 185   1            {
- 186   2              mode_data = FALSE;
- 187   2              duty_cycle_data = TRUE;
- 188   2              freq_data = FALSE;    
- 189   2          
- 190   2              local_index = local_index + 1;
- 191   2              return;
- 192   2            }
- 193   1            else if(buffer[local_index] == 'F')
- 194   1            {
- 195   2              mode_data = FALSE;
- 196   2              duty_cycle_data = FALSE;
- 197   2              freq_data = TRUE;
- 198   2              
- 199   2              local_index = local_index + 1;
- 200   2              return;
- 201   2            }
- 202   1        
- 203   1            /**
- 204   1            * Incoming data analysis
- 205   1            */
- 206   1            if(new_data)
- 207   1            {
- 208   2              if(mode_data)
- 209   2              {
- 210   3                operation_mode = buffer[local_index];
- 211   3                if(operation_mode == 49)
- 212   3                {
- 213   4                  two_channel = FALSE;
- 214   4                }
- 215   3                else
- 216   3                {
- 217   4                  two_channel = TRUE;
- 218   4                }
- 219   3              }
- 220   2            }
- 221   1          
- 222   1            if(duty_cycle_data)
+ 178   1        {
+ 179   2          is_read = TRUE;
+ 180   2        }
+ 181   1        
+ 182   1        return;
+ 183   1      }
+ 184          
+ 185          
+ 186          
+ 187          void analyzeData()
+ 188          {
+ 189   1        if(buffer[local_index]=='S')
+ 190   1            {
+ 191   2              new_data = TRUE;
+ 192   2          
+ 193   2              mode_data = TRUE;
+ 194   2              freq_data = FALSE;
+ 195   2              duty_cycle_data = FALSE;
+ 196   2          
+ 197   2              local_index = local_index + 1;
+ 198   2              return;
+ 199   2            }
+ 200   1            else if(buffer[local_index] == 'D')
+ 201   1            {
+ 202   2              mode_data = FALSE;
+ 203   2              duty_cycle_data = TRUE;
+ 204   2              freq_data = FALSE;    
+ 205   2          
+ 206   2              local_index = local_index + 1;
+ 207   2              return;
+ 208   2            }
+ 209   1            else if(buffer[local_index] == 'F')
+ 210   1            {
+ 211   2              mode_data = FALSE;
+ 212   2              duty_cycle_data = FALSE;
+ 213   2              freq_data = TRUE;
+ 214   2              
+ 215   2              local_index = local_index + 1;
+ 216   2              return;
+ 217   2            }
+ 218   1        
+ 219   1            /**
+ 220   1            * Incoming data analysis
+ 221   1            */
+ 222   1            if(new_data)
  223   1            {
- 224   2              if(!two_channel)
+ 224   2              if(mode_data)
  225   2              {
- 226   3                // for single channel
- 227   3                duty_cycle_1_t[local_index - 3] = buffer[local_index];
- 228   3              } 
- 229   2              else
- 230   2              {
- 231   3                // for double channel
- 232   3                if(local_index < 5)
- 233   3                {
- 234   4                  duty_cycle_1_t[local_index - 3] = buffer[local_index];
- 235   4                }
- 236   3                else
- 237   3                {
- 238   4                  duty_cycle_2_t[local_index - 5] = buffer[local_index];
- 239   4                }
- 240   3              }
-C51 COMPILER V9.59.0.0   MAIN                                                              01/21/2019 18:05:24 PAGE 5   
+ 226   3                operation_mode = buffer[local_index];
+ 227   3                if(operation_mode == 49)
+ 228   3                {
+ 229   4                  two_channel = FALSE;
+ 230   4                }
+ 231   3                else
+ 232   3                {
+ 233   4                  two_channel = TRUE;
+ 234   4                }
+ 235   3              }
+ 236   2            }
+ 237   1          
+ 238   1            if(duty_cycle_data)
+ 239   1            {
+C51 COMPILER V9.59.0.0   MAIN                                                              01/22/2019 11:25:28 PAGE 5   
 
- 241   2            }
- 242   1          
- 243   1            if(freq_data)
- 244   1            { 
- 245   2              if(!two_channel)                                            // for single channel
+ 240   2              if(!two_channel)
+ 241   2              {
+ 242   3                // for single channel
+ 243   3                duty_cycle_1_t[local_index - 3] = buffer[local_index];
+ 244   3              } 
+ 245   2              else
  246   2              {
- 247   3                frequency_1_t[local_index - 6] = buffer[local_index];
- 248   3              }
- 249   2              else                                                        // for two channels
- 250   2              {
- 251   3                if(local_index < 16)
- 252   3                {
- 253   4                  frequency_1_t[local_index - 8] = buffer[local_index];
- 254   4                }
- 255   3                else
- 256   3                {
- 257   4                  frequency_2_t[local_index - 16] = buffer[local_index];
- 258   4                }
- 259   3              }
- 260   2            }
- 261   1            //SBUF = buffer[local_index];
- 262   1            local_index = local_index + 1;
- 263   1            return;
- 264   1      }
- 265          
- 266          
- 267          void getValues()                                                    // convert duty cycles and freqs to ints
- 268          { 
- 269   1        if(!two_channel)
- 270   1        {
- 271   2          conversion_scaler = 1;                                          // scaler for retrieving values
- 272   2          
- 273   2          frequency_1 = 0;                                                // resetting frequency 1
- 274   2              
- 275   2          for(i=7;i>=0;i--)                                               // calculating frequency 1
- 276   2          {     
- 277   3            frequency_1 = (frequency_1_t[i] - ascii_offset) * conversion_scaler + frequency_1;      
- 278   3            conversion_scaler = conversion_scaler * 10;                   // incrementing order of magnitude
- 279   3          }
- 280   2          
- 281   2          conversion_scaler = 1;                                          // scaler for retrieving values
- 282   2          
- 283   2          duty_cycle_1 = 0;                                               // resetting duty cycle 1
- 284   2          
- 285   2          for(i=1;i>=0;i--)                                               // calculating duty cycle 1
- 286   2          {
- 287   3            duty_cycle_1 = (duty_cycle_1_t[i] - ascii_offset) * conversion_scaler + duty_cycle_1;
- 288   3            conversion_scaler = conversion_scaler * 10;                   // incrementing order of magnitude
- 289   3          }
- 290   2        }
- 291   1        else
- 292   1        {
- 293   2          conversion_scaler = 1;                                          // scaler for retrieving values   
- 294   2          
- 295   2          frequency_1 = 0;                                                // resetting frequency 1
+ 247   3                // for double channel
+ 248   3                if(local_index < 5)
+ 249   3                {
+ 250   4                  duty_cycle_1_t[local_index - 3] = buffer[local_index];
+ 251   4                }
+ 252   3                else
+ 253   3                {
+ 254   4                  duty_cycle_2_t[local_index - 5] = buffer[local_index];
+ 255   4                }
+ 256   3              }
+ 257   2            }
+ 258   1          
+ 259   1            if(freq_data)
+ 260   1            { 
+ 261   2              if(!two_channel)                                            // for single channel
+ 262   2              {
+ 263   3                frequency_1_t[local_index - 6] = buffer[local_index];
+ 264   3              }
+ 265   2              else                                                        // for two channels
+ 266   2              {
+ 267   3                if(local_index < 16)
+ 268   3                {
+ 269   4                  frequency_1_t[local_index - 8] = buffer[local_index];
+ 270   4                }
+ 271   3                else
+ 272   3                {
+ 273   4                  frequency_2_t[local_index - 16] = buffer[local_index];
+ 274   4                }
+ 275   3              }
+ 276   2            }
+ 277   1            //SBUF = buffer[local_index];
+ 278   1            local_index = local_index + 1;
+ 279   1            return;
+ 280   1      }
+ 281          
+ 282          
+ 283          void getValues()                                                    // convert duty cycles and freqs to ints
+ 284          { 
+ 285   1        if(!two_channel)
+ 286   1        {
+ 287   2          conversion_scaler = 1;                                          // scaler for retrieving values
+ 288   2          
+ 289   2          frequency_1 = 0;                                                // resetting frequency 1
+ 290   2              
+ 291   2          for(i=7;i>=0;i--)                                               // calculating frequency 1
+ 292   2          {     
+ 293   3            frequency_1 = (frequency_1_t[i] - ascii_offset) * conversion_scaler + frequency_1;      
+ 294   3            conversion_scaler = conversion_scaler * 10;                   // incrementing order of magnitude
+ 295   3          }
  296   2          
- 297   2          for(i=7;i>=0;i--)                                               // calculating frequency 1
- 298   2          {
- 299   3            frequency_1 = (frequency_1_t[i] - ascii_offset) * conversion_scaler + frequency_1;  
- 300   3            conversion_scaler = conversion_scaler * 10;                   // incrementing order of magnitude
- 301   3          }
- 302   2          
-C51 COMPILER V9.59.0.0   MAIN                                                              01/21/2019 18:05:24 PAGE 6   
+ 297   2          conversion_scaler = 1;                                          // scaler for retrieving values
+ 298   2          
+ 299   2          duty_cycle_1 = 0;                                               // resetting duty cycle 1
+ 300   2          
+ 301   2          for(i=1;i>=0;i--)                                               // calculating duty cycle 1
+C51 COMPILER V9.59.0.0   MAIN                                                              01/22/2019 11:25:28 PAGE 6   
 
- 303   2          conversion_scaler = 1;                                          // scaler for retrieving values   
- 304   2          
- 305   2          duty_cycle_1 = 0;                                               // resetting duty cycle 1
- 306   2              
- 307   2          for(i=1;i>=0;i--)                                               // calculating duty cycle 1
- 308   2          {
- 309   3            duty_cycle_1 = (duty_cycle_1_t[i] - ascii_offset) * conversion_scaler + duty_cycle_1;
- 310   3            conversion_scaler = conversion_scaler * 10;                   // incrementing order of magnitude
- 311   3          }
+ 302   2          {
+ 303   3            duty_cycle_1 = (duty_cycle_1_t[i] - ascii_offset) * conversion_scaler + duty_cycle_1;
+ 304   3            conversion_scaler = conversion_scaler * 10;                   // incrementing order of magnitude
+ 305   3          }
+ 306   2        }
+ 307   1        else
+ 308   1        {
+ 309   2          conversion_scaler = 1;                                          // scaler for retrieving values   
+ 310   2          
+ 311   2          frequency_1 = 0;                                                // resetting frequency 1
  312   2          
- 313   2          conversion_scaler = 1;                                          // scaler for retrieving values   
- 314   2          
- 315   2          frequency_2 = 0;                                                // resetting frequency 2
- 316   2          
- 317   2          for(i=7;i>=0;i--)                                               // calculating frequency 2
- 318   2          {
- 319   3            frequency_2 = (frequency_2_t[i] - ascii_offset) * conversion_scaler + frequency_2;  
- 320   3            conversion_scaler = conversion_scaler * 10;                   // incrementing order of magnitude
- 321   3          }
- 322   2          
- 323   2          conversion_scaler = 1;                                          // scaler for retrieving values
- 324   2          
- 325   2          duty_cycle_2 = 0;                                               // resetting duty cycle 2
- 326   2          
- 327   2          for(i=1;i>=0;i--)                                               // calculating duty cycle 2
- 328   2          {
- 329   3            duty_cycle_2 = (duty_cycle_2_t[i] - ascii_offset) * conversion_scaler + duty_cycle_2;
- 330   3            conversion_scaler = conversion_scaler * 10;                   // incrementing order of magnitude
- 331   3          }
- 332   2        }
- 333   1      }
- 334          
- 335          
- 336          
- 337          /**
- 338           * main function
- 339           */
- 340          void main()
- 341          {
- 342   1        /**
- 343   1        * Enable the interrupts - general and UART
- 344   1        */
- 345   1        ES = 1;
- 346   1        EA = 1;
- 347   1        
- 348   1        /**
- 349   1        * UART set into Mode 1 (8-bit, Variable Baud Rate)
- 350   1        */
- 351   1        SM0 = 0;
- 352   1        SM1 = 1;
- 353   1        SM2 = 0;
- 354   1        REN = 1;
- 355   1        
- 356   1        /**
- 357   1        * Timer 1 set into 8-bit, autoreload mode, 9600bps at 11,0952 MHz
- 358   1        */
- 359   1        TMOD = T1_MODE_8B_AUTORELOAD;
- 360   1        TH1 = T1_9600_11; 
- 361   1        TR1 = 1;
- 362   1        
- 363   1        /**
- 364   1        * Initial set up
-C51 COMPILER V9.59.0.0   MAIN                                                              01/21/2019 18:05:24 PAGE 7   
+ 313   2          for(i=7;i>=0;i--)                                               // calculating frequency 1
+ 314   2          {
+ 315   3            frequency_1 = (frequency_1_t[i] - ascii_offset) * conversion_scaler + frequency_1;  
+ 316   3            conversion_scaler = conversion_scaler * 10;                   // incrementing order of magnitude
+ 317   3          }
+ 318   2          
+ 319   2          conversion_scaler = 1;                                          // scaler for retrieving values   
+ 320   2          
+ 321   2          duty_cycle_1 = 0;                                               // resetting duty cycle 1
+ 322   2              
+ 323   2          for(i=1;i>=0;i--)                                               // calculating duty cycle 1
+ 324   2          {
+ 325   3            duty_cycle_1 = (duty_cycle_1_t[i] - ascii_offset) * conversion_scaler + duty_cycle_1;
+ 326   3            conversion_scaler = conversion_scaler * 10;                   // incrementing order of magnitude
+ 327   3          }
+ 328   2          
+ 329   2          conversion_scaler = 1;                                          // scaler for retrieving values   
+ 330   2          
+ 331   2          frequency_2 = 0;                                                // resetting frequency 2
+ 332   2          
+ 333   2          for(i=7;i>=0;i--)                                               // calculating frequency 2
+ 334   2          {
+ 335   3            frequency_2 = (frequency_2_t[i] - ascii_offset) * conversion_scaler + frequency_2;  
+ 336   3            conversion_scaler = conversion_scaler * 10;                   // incrementing order of magnitude
+ 337   3          }
+ 338   2          
+ 339   2          conversion_scaler = 1;                                          // scaler for retrieving values
+ 340   2          
+ 341   2          duty_cycle_2 = 0;                                               // resetting duty cycle 2
+ 342   2          
+ 343   2          for(i=1;i>=0;i--)                                               // calculating duty cycle 2
+ 344   2          {
+ 345   3            duty_cycle_2 = (duty_cycle_2_t[i] - ascii_offset) * conversion_scaler + duty_cycle_2;
+ 346   3            conversion_scaler = conversion_scaler * 10;                   // incrementing order of magnitude
+ 347   3          }
+ 348   2        }
+ 349   1      }
+ 350          
+ 351          
+ 352          
+ 353          /**
+ 354           * main function
+ 355           */
+ 356          void main()
+ 357          {
+ 358   1        /**
+ 359   1        * Enable the interrupts - general and UART
+ 360   1        */
+ 361   1        ES = 1;
+ 362   1        EA = 1;
+ 363   1        
+C51 COMPILER V9.59.0.0   MAIN                                                              01/22/2019 11:25:28 PAGE 7   
 
- 365   1        */
- 366   1        message_index = 0;
- 367   1        local_index = 0;
- 368   1        ascii_offset = 48;  
- 369   1        
- 370   1        while(1)
- 371   1        {
- 372   2          while(buffer[local_index]!='E' && !is_read)
- 373   2          {
- 374   3            analyzeData();
- 375   3          }
- 376   2          if(buffer[local_index]=='E')
- 377   2          {
- 378   3            is_read = TRUE;
- 379   3            getValues();
- 380   3            local_index = 0;
- 381   3            setPWM();
- 382   3          }   
- 383   2        }
- 384   1      }
+ 364   1        /**
+ 365   1        * UART set into Mode 1 (8-bit, Variable Baud Rate)
+ 366   1        */
+ 367   1        SM0 = 0;
+ 368   1        SM1 = 1;
+ 369   1        SM2 = 0;
+ 370   1        REN = 1;
+ 371   1        
+ 372   1        /**
+ 373   1        * Timer 1 set into 8-bit, autoreload mode, 9600bps at 11,0952 MHz
+ 374   1        */
+ 375   1        TMOD = T1_MODE_8B_AUTORELOAD;
+ 376   1        TH1 = T1_9600_11; 
+ 377   1        TR1 = 1;
+ 378   1        
+ 379   1        /**
+ 380   1        * Initial set up
+ 381   1        */
+ 382   1        message_index = 0;
+ 383   1        local_index = 0;
+ 384   1        ascii_offset = 48;  
+ 385   1        
+ 386   1        while(1)
+ 387   1        {
+ 388   2          while(buffer[local_index]!='E' && !is_read)
+ 389   2          {
+ 390   3            analyzeData();
+ 391   3          }
+ 392   2          if(buffer[local_index]=='E')
+ 393   2          {
+ 394   3            is_read = TRUE;
+ 395   3            getValues();
+ 396   3            local_index = 0;
+ 397   3            setPWM();
+ 398   3          }   
+ 399   2        }
+ 400   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1188    ----
+   CODE SIZE        =   2176    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =    104       1
+   DATA SIZE        =     80       1
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

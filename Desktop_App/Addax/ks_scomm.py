@@ -15,7 +15,7 @@ import glob
 import serial
 
 class SerialComm:
-    debug_mode = True
+    debug_mode = False
     serial_port = ''
 
     def __init__(self):
