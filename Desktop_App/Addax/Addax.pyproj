@@ -22,8 +22,32 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Addax.py" />
+    <Compile Include="Addax-old.py" />
+    <Compile Include="Addax.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ks_scomm.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="mode_1_frame.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="mode_2_frame.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="mode_3_frame.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="mode_4_frame.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="mode_5_frame.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="mode_6_frame.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tab_frame.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
