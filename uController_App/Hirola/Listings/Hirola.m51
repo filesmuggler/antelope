@@ -1,9 +1,9 @@
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    01/22/2019  16:42:59  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    01/23/2019  18:11:52  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
-D:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\main.obj, .\Objects\definitions.obj, .\Objects\timers.obj, .\Objects\putchar.obj T
->> O .\Objects\Hirola PRINT (.\Listings\Hirola.m51) RAMSIZE (256)
+D:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\main.obj, .\Objects\definitions.obj, .\Objects\timers.obj, .\Objects\putchar.obj, 
+>> .\Objects\header.obj TO .\Objects\Hirola PRINT (.\Listings\Hirola.m51) RAMSIZE (256)
 
 
 MEMORY MODEL: SMALL WITH FLOATING POINT ARITHMETIC
@@ -14,6 +14,7 @@ INPUT MODULES INCLUDED:
   .\Objects\definitions.obj (DEFINITIONS)
   .\Objects\timers.obj (TIMERS)
   .\Objects\putchar.obj (PUTCHAR)
+  .\Objects\header.obj (HEADER)
   D:\KEIL_V5\C51\LIB\C51FPS.LIB (?C?FPADD)
   D:\KEIL_V5\C51\LIB\C51FPS.LIB (?C?FPMUL)
   D:\KEIL_V5\C51\LIB\C51FPS.LIB (?C?FPDIV)
@@ -58,8 +59,8 @@ LINK MAP OF MODULE:  .\Objects\Hirola (MAIN)
 
 OVERLAY MAP OF MODULE:   .\Objects\Hirola (MAIN)
 
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/23/2019  18:11:52  PAGE 2
 
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/22/2019  16:42:59  PAGE 2
 
 
 SEGMENT                           DATA_GROUP 
@@ -118,10 +119,10 @@ SYMBOL TABLE OF MODULE:  .\Objects\Hirola (MAIN)
   C:0026H         PUBLIC        setPWM
   D:002EH         PUBLIC        new_data
   D:002FH         PUBLIC        duty_cycle_1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/23/2019  18:11:52  PAGE 3
+
+
   D:008DH         PUBLIC        TH1
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/22/2019  16:42:59  PAGE 3
-
-
   D:0030H         PUBLIC        duty_cycle_2
   B:0098H.7       PUBLIC        SM0
   B:0098H.6       PUBLIC        SM1
@@ -178,10 +179,10 @@ SYMBOL TABLE OF MODULE:  .\Objects\Hirola (MAIN)
   C:026BH         LINE#         97
   C:026EH         LINE#         98
   C:02B7H         LINE#         99
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/23/2019  18:11:52  PAGE 4
+
+
   C:0300H         LINE#         101
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/22/2019  16:42:59  PAGE 4
-
-
   C:0301H         LINE#         102
   C:030AH         LINE#         103
   C:030AH         LINE#         105
@@ -238,10 +239,10 @@ SYMBOL TABLE OF MODULE:  .\Objects\Hirola (MAIN)
   C:0C73H         LINE#         171
   C:0C78H         LINE#         172
   C:0C78H         LINE#         173
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/23/2019  18:11:52  PAGE 5
+
+
   C:0C7BH         LINE#         174
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/22/2019  16:42:59  PAGE 5
-
-
   C:0C80H         LINE#         176
   C:0C80H         LINE#         178
   C:0C80H         LINE#         179
@@ -298,10 +299,10 @@ SYMBOL TABLE OF MODULE:  .\Objects\Hirola (MAIN)
   C:0B47H         LINE#         249
   C:0B47H         LINE#         250
   C:0B4DH         LINE#         251
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/23/2019  18:11:52  PAGE 6
+
+
   C:0B4FH         LINE#         253
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/22/2019  16:42:59  PAGE 6
-
-
   C:0B4FH         LINE#         254
   C:0B5BH         LINE#         255
   C:0B5BH         LINE#         256
@@ -358,10 +359,10 @@ SYMBOL TABLE OF MODULE:  .\Objects\Hirola (MAIN)
   C:0992H         LINE#         323
   C:09A2H         LINE#         324
   C:09A2H         LINE#         325
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/23/2019  18:11:52  PAGE 7
+
+
   C:09CFH         LINE#         326
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/22/2019  16:42:59  PAGE 7
-
-
   C:09E8H         LINE#         327
   C:09ECH         LINE#         329
   C:09F6H         LINE#         331
@@ -381,34 +382,34 @@ SYMBOL TABLE OF MODULE:  .\Objects\Hirola (MAIN)
   C:0ACDH         LINE#         349
   -------         ENDPROC       GETVALUES
   -------         PROC          MAIN
-  C:0C9EH         LINE#         356
+  C:0C9EH         LINE#         352
+  C:0C9EH         LINE#         353
   C:0C9EH         LINE#         357
-  C:0C9EH         LINE#         361
-  C:0CA0H         LINE#         362
-  C:0CA2H         LINE#         367
-  C:0CA4H         LINE#         368
-  C:0CA6H         LINE#         369
-  C:0CA8H         LINE#         370
-  C:0CAAH         LINE#         375
-  C:0CADH         LINE#         376
-  C:0CB0H         LINE#         377
-  C:0CB2H         LINE#         382
-  C:0CB5H         LINE#         383
-  C:0CB7H         LINE#         384
-  C:0CBAH         LINE#         386
-  C:0CBAH         LINE#         387
-  C:0CBAH         LINE#         388
-  C:0CC9H         LINE#         389
-  C:0CC9H         LINE#         390
-  C:0CCCH         LINE#         391
-  C:0CCEH         LINE#         392
-  C:0CD2H         LINE#         393
-  C:0CD2H         LINE#         394
-  C:0CD5H         LINE#         395
-  C:0CD8H         LINE#         396
-  C:0CDBH         LINE#         397
-  C:0CDEH         LINE#         398
-  C:0CDEH         LINE#         399
+  C:0CA0H         LINE#         358
+  C:0CA2H         LINE#         363
+  C:0CA4H         LINE#         364
+  C:0CA6H         LINE#         365
+  C:0CA8H         LINE#         366
+  C:0CAAH         LINE#         371
+  C:0CADH         LINE#         372
+  C:0CB0H         LINE#         373
+  C:0CB2H         LINE#         379
+  C:0CB5H         LINE#         380
+  C:0CB7H         LINE#         381
+  C:0CBAH         LINE#         383
+  C:0CBAH         LINE#         384
+  C:0CBAH         LINE#         385
+  C:0CC9H         LINE#         386
+  C:0CC9H         LINE#         387
+  C:0CCCH         LINE#         388
+  C:0CCEH         LINE#         389
+  C:0CD2H         LINE#         390
+  C:0CD2H         LINE#         391
+  C:0CD5H         LINE#         392
+  C:0CD8H         LINE#         393
+  C:0CDBH         LINE#         394
+  C:0CDEH         LINE#         395
+  C:0CDEH         LINE#         396
   -------         ENDPROC       MAIN
   -------         ENDMOD        MAIN
 
@@ -418,10 +419,10 @@ SYMBOL TABLE OF MODULE:  .\Objects\Hirola (MAIN)
 
   -------         MODULE        TIMERS
   C:0000H         SYMBOL        _ICE_DUMMY_
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/23/2019  18:11:52  PAGE 8
+
+
   -------         ENDMOD        TIMERS
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/22/2019  16:42:59  PAGE 8
-
-
 
   -------         MODULE        PUTCHAR
   C:0000H         SYMBOL        _ICE_DUMMY_
@@ -439,6 +440,10 @@ SYMBOL TABLE OF MODULE:  .\Objects\Hirola (MAIN)
   C:0D1BH         LINE#         9
   -------         ENDPROC       _PUTCHAR
   -------         ENDMOD        PUTCHAR
+
+  -------         MODULE        HEADER
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  -------         ENDMOD        HEADER
 
   -------         MODULE        ?C?FPADD
   C:0458H         PUBLIC        ?C?FPADD
@@ -474,6 +479,9 @@ SYMBOL TABLE OF MODULE:  .\Objects\Hirola (MAIN)
   -------         MODULE        ?C?SLCMP
   C:080BH         PUBLIC        ?C?SLCMP
   -------         ENDMOD        ?C?SLCMP
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/23/2019  18:11:52  PAGE 9
+
+
 
 Program Size: data=90.0 xdata=0 code=3352
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -17,6 +17,6 @@ class Mode_6_Frame(tk.Frame):
         '''
         Creates all the widgets in the window
         '''
-        self.user_period_label = tk.Label(self, text="Not found").grid(column=0,row=0)
-        self.user_duty_label = tk.Label(self, text="yet").grid(column=1,row=0)
-
+        #self.user_period_label = tk.Label(self, text="Not found").grid(column=0,row=0)
+        #self.user_duty_label = tk.Label(self, text="yet").grid(column=1,row=0)
+        print("")
