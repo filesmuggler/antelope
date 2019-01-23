@@ -349,10 +349,6 @@ void getValues()																										// convert duty cycles and freqs to in
 }
 
 
-
-/**
- * main function
- */
 void main()
 {
 	/**
@@ -379,6 +375,7 @@ void main()
 	/**
   * Initial set up
 	*/
+
 	message_index = 0;
 	local_index = 0;
 	ascii_offset = 48;	
